@@ -68,21 +68,17 @@ const data = {
       ],
     },
     {
-      title: "Documenti",
-      url: "/documenti",
+      title: "Formulari",
+      url: "/formulari",
       icon: BookOpen,
       items: [
         {
-          title: "Scansione Formulari",
+          title: "Gestione Formulari",
           url: "/formulari/gestioneFormulari",  // Solo questo URL viene aggiornato
         },
         {
-          title: "Archivio",
-          url: "/documenti/archivio",
-        },
-        {
-          title: "Gestione",
-          url: "/documenti/gestione",
+          title: "Scansione Formulari",
+          url: "/formulari/scansioneFormulari",
         },
       ],
     },
