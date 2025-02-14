@@ -18,6 +18,7 @@ import { DateRangePicker } from "@/components/date-range-picker"
 import { Search, Upload, MoreVertical, FileDown, Eye, Trash2, CheckCircle } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import type { Formulario } from "@/types/database"
+import { DocumentButton } from "@/components/DocumentButton"
 
 export default function Page() {
   const [isUploadOpen, setIsUploadOpen] = useState(false)
@@ -78,21 +79,65 @@ export default function Page() {
     }
   }
 
+  const openDocument = async (path: string) => {
+    try {
+      const { data, error } = await supabase
+        .storage
+        .from('documenti')
+        .createSignedUrl(path, 60) // URL firmato valido per 60 secondi
+  
+      if (error) throw error
+      if (data?.signedUrl) {
+        window.open(data.signedUrl, '_blank')
+      }
+    } catch (error) {
+      console.error('Error opening document:', error)
+    }
+  }
+  const downloadDocument = async (path: string) => {
+    try {
+      // Ottieni l'URL pubblico da Supabase
+      const { data } = supabase
+        .storage
+        .from('documenti')
+        .getPublicUrl(path)
+        
+      if (data.publicUrl) {
+        // Preleva il file come blob
+        const response = await fetch(data.publicUrl)
+        const blob = await response.blob()
+        // Crea un URL blob per il file
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        // Imposta il nome del file (prende l'ultimo segmento del path)
+        const fileName = path.split('/').pop() || 'download.pdf'
+        link.setAttribute('download', fileName)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+      }
+    } catch (error) {
+      console.error('Error downloading document:', error)
+    }
+  }
+
   const filterByDate = (formulario: Formulario) => {
     if (!dateFilter?.from) return true
-    
+
     const createdAt = new Date(formulario.created_at)
-    
+
     if (dateFilter.from && !dateFilter.to) {
       return createdAt.toDateString() === dateFilter.from.toDateString()
     }
-    
+
     if (dateFilter.from && dateFilter.to) {
       const end = new Date(dateFilter.to)
       end.setHours(23, 59, 59, 999)
       return createdAt >= dateFilter.from && createdAt <= end
     }
-    
+
     return true
   }
 
@@ -173,17 +218,19 @@ export default function Page() {
             </CardHeader>
             <CardContent>
               {/* Filtri */}
-              <div className="flex flex-col gap-4 mb-6">
-                <div className="flex gap-4">
-                  <div className="relative flex-1">
+              <div className="mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="relative w-[200px]">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Cerca per numero FIR..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-8"
+                      maxLength={20}
                     />
                   </div>
+                  <DateRangePicker onChange={setDateFilter} />
                   <Select 
                     value={filterGestiti}
                     onValueChange={(value) => setFilterGestiti(value as 'tutti' | 'gestiti' | 'daGestire')}
@@ -198,10 +245,8 @@ export default function Page() {
                     </SelectContent>
                   </Select>
                 </div>
-                
-                <DateRangePicker onChange={setDateFilter} />
 
-                <div className="text-sm text-muted-foreground">
+                <div className="mt-2 text-sm text-muted-foreground">
                   {filteredFormulari.length} risultat{filteredFormulari.length === 1 ? 'o' : 'i'} 
                   {filteredFormulari.length !== formulari.length && ` su ${formulari.length} totali`}
                 </div>
@@ -244,22 +289,25 @@ export default function Page() {
                         <TableCell>
                           <div className="flex gap-2">
                             {formulario.file_paths?.formulario && (
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-1" />
-                                FIR
-                              </Button>
+                              <DocumentButton 
+                                path={formulario.file_paths.formulario} 
+                                label="FIR"
+                                variant="fir"
+                              />
                             )}
                             {formulario.file_paths?.buono_intervento && (
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-1" />
-                                Buono
-                              </Button>
+                              <DocumentButton 
+                                path={formulario.file_paths.buono_intervento} 
+                                label="Buono"
+                                variant="buono"
+                              />
                             )}
                             {formulario.file_paths?.scontrino && (
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4 mr-1" />
-                                Scontrino
-                              </Button>
+                              <DocumentButton 
+                                path={formulario.file_paths.scontrino} 
+                                label="Scontrino"
+                                variant="scontrino"
+                              />
                             )}
                           </div>
                         </TableCell>
@@ -272,7 +320,12 @@ export default function Page() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               {formulario.file_paths?.formulario && (
-                                <DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    formulario.file_paths?.formulario &&
+                                    downloadDocument(formulario.file_paths.formulario)
+                                  }
+                                >
                                   <FileDown className="mr-2 h-4 w-4" />
                                   Scarica
                                 </DropdownMenuItem>
