@@ -1,4 +1,3 @@
-// app/formulari/scansioneFormulari/components/preview-formulari.tsx
 "use client"
 
 import { useState } from 'react'
@@ -25,6 +24,15 @@ export function PreviewFormulari({ results }: PreviewFormulariProps) {
     await navigator.clipboard.writeText(firWithoutSpaces)
     setCopiedFIR(fir)
     setTimeout(() => setCopiedFIR(null), 2000)
+  }
+
+  // Funzione per aprire il file tramite l'endpoint API
+  const openFile = (filePath: string) => {
+    // Codifica il percorso e costruisci l'URL per l'API
+    const encodedPath = encodeURIComponent(filePath)
+    const downloadUrl = `/formulari/scansioneFormulari/api/download?file=${encodedPath}`
+    console.log("Apertura file tramite URL:", downloadUrl)
+    window.open(downloadUrl, '_blank')
   }
 
   if (!localResults?.percorsi_file) {
@@ -86,19 +94,52 @@ export function PreviewFormulari({ results }: PreviewFormulariProps) {
                   <td className="p-4">
                     <div className="flex gap-2">
                       {files.Formulario && (
-                        <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
-                          Formulario
-                        </Badge>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            console.log("Badge cliccato: Formulario", files.Formulario)
+                            openFile(files.Formulario)
+                          }}
+                        >
+                          <Badge
+                            variant="outline"
+                            className="bg-green-100 text-green-800 hover:bg-green-100"
+                          >
+                            Formulario
+                          </Badge>
+                        </div>
                       )}
                       {files["Buono di intervento"] && (
-                        <Badge variant="outline" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-                          Buono di intervento
-                        </Badge>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            console.log("Badge cliccato: Buono di intervento", files["Buono di intervento"])
+                            openFile(files["Buono di intervento"])
+                          }}
+                        >
+                          <Badge
+                            variant="outline"
+                            className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                          >
+                            Buono di intervento
+                          </Badge>
+                        </div>
                       )}
                       {files["Scontrino del peso"] && (
-                        <Badge variant="outline" className="bg-red-100 text-red-800 hover:bg-red-100">
-                          Scontrino del peso
-                        </Badge>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            console.log("Badge cliccato: Scontrino del peso", files["Scontrino del peso"])
+                            openFile(files["Scontrino del peso"])
+                          }}
+                        >
+                          <Badge
+                            variant="outline"
+                            className="bg-red-100 text-red-800 hover:bg-red-100"
+                          >
+                            Scontrino del peso
+                          </Badge>
+                        </div>
                       )}
                     </div>
                   </td>
