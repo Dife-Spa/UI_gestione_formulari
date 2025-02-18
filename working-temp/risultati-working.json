@@ -10,167 +10,32 @@
       "page_number": 2,
       "fir": "ZHDV 006574 Z",
       "doc_type": "Formulario_Allegato",
-      "original_fir": "ZHDV 006574 Z"
+      "original_fir": ""
     },
     {
       "page_number": 3,
       "fir": "ZHDV 006574 Z",
       "doc_type": "Formulario_Integrazione",
-      "original_fir": "ZHDV 006542"
+      "original_fir": ""
     },
     {
       "page_number": 4,
-      "fir": "006574",
+      "fir": "ZHDV 006574 Z",
       "doc_type": "Buono di intervento",
-      "original_fir": "006574"
+      "original_fir": ""
     },
     {
       "page_number": 5,
       "fir": "ZHDV 006574 Z",
       "doc_type": "Scontrino del peso",
-      "original_fir": "ZHDV 006574 Z"
-    },
-    {
-      "page_number": 6,
-      "fir": "FDCS 000193 W",
-      "doc_type": "Formulario",
-      "original_fir": "FDCS 000193 W"
-    },
-    {
-      "page_number": 7,
-      "fir": "FDCS00193W",
-      "doc_type": "Scontrino del peso",
-      "original_fir": "FDCS 00193W"
-    },
-    {
-      "page_number": 8,
-      "fir": "FDCS00193W",
-      "doc_type": "Buono di intervento",
-      "original_fir": "FDCS00193W"
-    },
-    {
-      "page_number": 9,
-      "fir": "FDCS000192R",
-      "doc_type": "Formulario",
-      "original_fir": "FDCS 000192 R"
-    },
-    {
-      "page_number": 10,
-      "fir": "FDCS000192R",
-      "doc_type": "Scontrino del peso",
-      "original_fir": "FDCS000192R"
-    },
-    {
-      "page_number": 11,
-      "fir": "FDCS 000195 C",
-      "doc_type": "Formulario",
-      "original_fir": "FDCS 000195 C"
-    },
-    {
-      "page_number": 12,
-      "fir": "HXZK 004653 Q",
-      "doc_type": "Formulario",
-      "original_fir": "HXZK 004653 Q"
-    },
-    {
-      "page_number": 13,
-      "fir": "655008",
-      "doc_type": "Formulario",
-      "original_fir": "655008"
-    },
-    {
-      "page_number": 14,
-      "fir": "FDCS 000194 B",
-      "doc_type": "Formulario",
-      "original_fir": "FDCS 000194 B"
-    },
-    {
-      "page_number": 15,
-      "fir": "015473",
-      "doc_type": "Formulario",
-      "original_fir": "015473"
-    },
-    {
-      "page_number": 16,
-      "fir": "015440",
-      "doc_type": "Formulario",
-      "original_fir": "015440"
-    },
-    {
-      "page_number": 17,
-      "fir": "015440",
-      "doc_type": "Buono di intervento",
-      "original_fir": ""
-    },
-    {
-      "page_number": 18,
-      "fir": "015500",
-      "doc_type": "Formulario",
-      "original_fir": "015500"
-    },
-    {
-      "page_number": 19,
-      "fir": "015500",
-      "doc_type": "Buono di intervento",
-      "original_fir": ""
-    },
-    {
-      "page_number": 20,
-      "fir": "015500",
-      "doc_type": "Scontrino del peso",
       "original_fir": ""
     }
   ],
   "percorsi_file": {
-    "655008": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_655008_Formulario.pdf",
-      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\655008_Buono_di_intervento.pdf",
-      "Scontrino del peso": null
-    },
     "ZHDV 006574 Z": {
       "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Formulario.pdf",
       "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Buono_di_intervento.pdf",
       "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Scontrino_del_peso.pdf"
-    },
-    "FDCS 000193 W": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS 000193 W_Formulario.pdf",
-      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS 000193 W_Buono_di_intervento.pdf",
-      "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS 000193 W_Scontrino_del_peso.pdf"
-    },
-    "FDCS000192R": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS000192R_Formulario.pdf",
-      "Buono di intervento": null,
-      "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS000192R_Scontrino_del_peso.pdf"
-    },
-    "FDCS 000195 C": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS 000195 C_Formulario.pdf",
-      "Buono di intervento": null,
-      "Scontrino del peso": null
-    },
-    "HXZK 004653 Q": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_HXZK 004653 Q_Formulario.pdf",
-      "Buono di intervento": null,
-      "Scontrino del peso": null
-    },
-    "FDCS 000194 B": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_FDCS 000194 B_Formulario.pdf",
-      "Buono di intervento": null,
-      "Scontrino del peso": null
-    },
-    "015473": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015473_Formulario.pdf",
-      "Buono di intervento": null,
-      "Scontrino del peso": null
-    },
-    "015440": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015440_Formulario.pdf",
-      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015440_Buono_di_intervento.pdf",
-      "Scontrino del peso": null
-    },
-    "015500": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015500_Formulario.pdf",
-      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015500_Buono_di_intervento.pdf",
-      "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_015500_Scontrino_del_peso.pdf"
     }
   }
 }
