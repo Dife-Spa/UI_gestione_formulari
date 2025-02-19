@@ -1,0 +1,101 @@
+{
+  "id_elaborazione": "464232a0-8f42-487e-a05a-a1543d5cfa45",
+  "file_input": "doc02574720250207155122.pdf",
+  "analisi_pagine": [
+    {
+      "page_number": 1,
+      "fir": "ZHDV006574Z",
+      "doc_type": "Formulario",
+      "fir_number_readed": "ZHDV 006574 Z",
+      "image": "page_1.jpg"
+    },
+    {
+      "page_number": 2,
+      "fir": "ZHDV006574Z",
+      "doc_type": "Formulario_Allegato",
+      "fir_number_readed": "ZHDV 006574 Z",
+      "image": "page_2.jpg"
+    },
+    {
+      "page_number": 3,
+      "fir": "ZHDV006574Z",
+      "doc_type": "Formulario_Integrazione",
+      "fir_number_readed": "ZHDV 006574 Z",
+      "image": "page_3.jpg"
+    },
+    {
+      "page_number": 4,
+      "fir": "ZHDV006574Z",
+      "doc_type": "Buono di intervento",
+      "fir_number_readed": "ZHDV 006574 Z",
+      "image": "page_4.jpg"
+    },
+    {
+      "page_number": 5,
+      "fir": "ZHDV006574Z",
+      "doc_type": "Scontrino del peso",
+      "fir_number_readed": "ZHDV 006574 Z",
+      "image": "page_5.jpg"
+    }
+  ],
+  "output": {
+    "formulari": [
+      {
+        "id": "6a5d04df-fc4e-4ecd-8a2e-7619aebd95e4",
+        "id_appuntamento": "111622588",
+        "numero_formulario": "ZHDV006574Z",
+        "numero_formulario_api": "ZHDV006574Z",
+        "dati_accettazione": null,
+        "file_formulario": "FIR_ZHDV006574Z_Formulario.pdf",
+        "file_buono_di_intervento": "FIR_ZHDV006574Z_Buono_di_intervento.pdf",
+        "file_scontrino_del_peso": "FIR_ZHDV006574Z_Scontrino_del_peso.pdf",
+        "dati_formulario": {
+          "numero_fir": "ZHDV 006574 Z",
+          "data_emissione": {
+            "data_printed": "28-01-2025",
+            "data_timestamp": 1738018800000
+          },
+          "produttore": {
+            "denominazione": "PUBLIACQUA SPA",
+            "unita_locale": "POT PONTASSIEVE VIA COLOGNOLESE - 50065 PONTASSIEVE (FI)"
+          },
+          "destinatario": {
+            "denominazione": "DIFE SPA",
+            "unita_locale": "VIA VECCHIA PROV LUCCHESE, 53 - 51034 SERRAVALLE PISTOIESE (PT)"
+          },
+          "trasportatore": {
+            "denominazione": "DIFE SPA"
+          },
+          "intermediario": {
+            "denominazione": "non presente"
+          },
+          "caratteristiche_rifiuto": {
+            "eer": "150106",
+            "stato_fisico": "2",
+            "quantita": "5",
+            "unita_misura": "kg",
+            "peso_verificato_partenza": "SI",
+            "aspetto": "5"
+          },
+          "trasporto": {
+            "targa_automezzo": "EY879VV",
+            "targa_rimorchio": "non presente",
+            "conducente": "TRAPANI FRANCESCO",
+            "data_inizio": "28/01/2025",
+            "ora_inizio": "09:50"
+          },
+          "destinatario_info": {
+            "carico_accettato": "accettato per intero",
+            "quantita_accettata": "5",
+            "quantita_respinta": "non presente",
+            "motivazioni": "non presente",
+            "attesa_verifica": "NO",
+            "data_arrivo": "29/01/2025",
+            "ora_arrivo": "11:27"
+          },
+          "annotazioni": "id: 278676"
+        }
+      }
+    ]
+  }
+}

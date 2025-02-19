@@ -2,40 +2,74 @@
   "analisi_pagine": [
     {
       "page_number": 1,
-      "fir": "ZHDV 006574 Z",
+      "fir": "JFXFH 000152 YF",
       "doc_type": "Formulario",
-      "original_fir": "ZHDV 006574 Z"
+      "original_fir": "JFXFH 000152 YF"
     },
     {
       "page_number": 2,
-      "fir": "ZHDV 006574 Z",
-      "doc_type": "Formulario_Allegato",
-      "original_fir": ""
+      "fir": "JFXFH 000152 YF",
+      "doc_type": "Formulario_Integrazione",
+      "original_fir": "JFXFH 000152 YF"
     },
     {
       "page_number": 3,
-      "fir": "ZHDV 006574 Z",
-      "doc_type": "Formulario_Integrazione",
-      "original_fir": ""
+      "fir": "JFXFH 000187",
+      "doc_type": "Formulario",
+      "original_fir": "JFXFH 000187"
     },
     {
       "page_number": 4,
-      "fir": "ZHDV 006574 Z",
+      "fir": "JFXFH 000187",
+      "doc_type": "Formulario_Integrazione",
+      "original_fir": "JFXFH 000187 MC"
+    },
+    {
+      "page_number": 5,
+      "fir": "JFXFH 000187",
       "doc_type": "Buono di intervento",
       "original_fir": ""
     },
     {
-      "page_number": 5,
-      "fir": "ZHDV 006574 Z",
+      "page_number": 6,
+      "fir": "JFXFH 000216 WV",
+      "doc_type": "Formulario",
+      "original_fir": "JFXFH 000216 WV"
+    },
+    {
+      "page_number": 7,
+      "fir": "JFXFH 000216 WV",
+      "doc_type": "Formulario_Integrazione",
+      "original_fir": "JFXFH 000216 WV"
+    },
+    {
+      "page_number": 8,
+      "fir": "JFXFH 000216 WV",
+      "doc_type": "Buono di intervento",
+      "original_fir": ""
+    },
+    {
+      "page_number": 9,
+      "fir": "JFXFH 000216 WV",
       "doc_type": "Scontrino del peso",
       "original_fir": ""
     }
   ],
   "percorsi_file": {
-    "ZHDV 006574 Z": {
-      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Formulario.pdf",
-      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Buono_di_intervento.pdf",
-      "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_ZHDV 006574 Z_Scontrino_del_peso.pdf"
+    "JFXFH 000152 YF": {
+      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000152 YF_Formulario.pdf",
+      "Buono di intervento": null,
+      "Scontrino del peso": null
+    },
+    "JFXFH 000187": {
+      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000187_Formulario.pdf",
+      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000187_Buono_di_intervento.pdf",
+      "Scontrino del peso": null
+    },
+    "JFXFH 000216 WV": {
+      "Formulario": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000216 WV_Formulario.pdf",
+      "Buono di intervento": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000216 WV_Buono_di_intervento.pdf",
+      "Scontrino del peso": "C:\\SVILUPPO\\DIFE\\portalev2\\working-temp\\output\\FIR_JFXFH 000216 WV_Scontrino_del_peso.pdf"
     }
   }
 }
