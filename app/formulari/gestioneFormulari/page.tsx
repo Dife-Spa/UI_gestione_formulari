@@ -17,8 +17,9 @@ import { DateRange } from "react-day-picker"
 import { DateRangePicker } from "@/components/date-range-picker"
 import { Search, Upload, MoreVertical, FileDown, Eye, Trash2, CheckCircle } from "lucide-react"
 import { supabase } from "@/lib/supabase"
-import type { Formulario } from "@/types/database"
 import { DocumentButton } from "@/components/DocumentButton"
+import type { Formulario, FormularioEsteso } from "@/types/database"
+import FormulariTable from "../gestioneFormulari/components/FormulariTable"
 
 export default function Page() {
   const [isUploadOpen, setIsUploadOpen] = useState(false)
@@ -32,9 +33,18 @@ export default function Page() {
     try {
       const { data, error } = await supabase
         .from('formulari')
-        .select('*')
+        .select(`
+          *,
+          dati_formulario,
+          trasportatore,
+          intermediario,
+          produttore,
+          destinatario,
+          unita_locale_produttore,
+          unita_locale_destinatario
+        `)
         .order('created_at', { ascending: false })
-
+  
       if (error) throw error
       setFormulari(data || [])
     } catch (error) {
@@ -253,104 +263,17 @@ export default function Page() {
               </div>
 
               {/* Tabella */}
-              {loading ? (
-                <div className="text-center py-4">Caricamento...</div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Numero FIR</TableHead>
-                      <TableHead>Data Inserimento</TableHead>
-                      <TableHead>Stato</TableHead>
-                      <TableHead>Documenti</TableHead>
-                      <TableHead className="w-[100px]">Azioni</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredFormulari.map((formulario) => (
-                      <TableRow key={formulario.id}>
-                        <TableCell className="font-medium">
-                          {formulario.numeroFir}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(formulario.created_at).toLocaleString('it-IT')}
-                        </TableCell>
-                        <TableCell>
-                          {formulario.gestito ? (
-                            <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
-                              Gestito il {new Date(formulario.marcaGestito!).toLocaleString('it-IT')}
-                            </Badge>
-                          ) : (
-                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-                              Da Gestire
-                            </Badge>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            {formulario.file_paths?.formulario && (
-                              <DocumentButton 
-                                path={formulario.file_paths.formulario} 
-                                label="FIR"
-                                variant="fir"
-                              />
-                            )}
-                            {formulario.file_paths?.buono_intervento && (
-                              <DocumentButton 
-                                path={formulario.file_paths.buono_intervento} 
-                                label="Buono"
-                                variant="buono"
-                              />
-                            )}
-                            {formulario.file_paths?.scontrino && (
-                              <DocumentButton 
-                                path={formulario.file_paths.scontrino} 
-                                label="Scontrino"
-                                variant="scontrino"
-                              />
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              {formulario.file_paths?.formulario && (
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    formulario.file_paths?.formulario &&
-                                    downloadDocument(formulario.file_paths.formulario)
-                                  }
-                                >
-                                  <FileDown className="mr-2 h-4 w-4" />
-                                  Scarica
-                                </DropdownMenuItem>
-                              )}
-                              <DropdownMenuItem
-                                onClick={() => handleGestione(formulario.id, formulario.gestito)}
-                              >
-                                <CheckCircle className="mr-2 h-4 w-4" />
-                                {formulario.gestito ? 'Marca come da gestire' : 'Marca come gestito'}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive"
-                                onClick={() => handleDelete(formulario.id)}
-                              >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Elimina
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
+                {loading ? (
+                  <div className="text-center py-4">Caricamento...</div>
+                ) : (
+                  <FormulariTable
+                      formulari={filteredFormulari as unknown as FormularioEsteso[]}
+                      loading={loading}
+                      onDelete={handleDelete}
+                      onGestione={handleGestione}
+                      onDownload={downloadDocument}
+                    />
+                )}
             </CardContent>
           </Card>
         </div>
