@@ -2,32 +2,30 @@
 
 import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DateRange } from "react-day-picker"
-import { DateRangePicker } from "@/components/date-range-picker"
-import { Search, Upload, MoreVertical, FileDown, Eye, Trash2, CheckCircle } from "lucide-react"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+// Change the import to use the FormulariTypes definition
+import type { Formulario as FormularioBase } from "@/types/database"
+import FormulariTable from "./components/FormulariTable"
+import { Formulario } from "./components/FormulariTypes"
 import { supabase } from "@/lib/supabase"
-import { DocumentButton } from "@/components/DocumentButton"
-import type { Formulario, FormularioEsteso } from "@/types/database"
-import FormulariTable from "../gestioneFormulari/components/FormulariTable"
 
 export default function Page() {
-  const [isUploadOpen, setIsUploadOpen] = useState(false)
+  // Update the state type to match what your FormulariTable expects
   const [formulari, setFormulari] = useState<Formulario[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterGestiti, setFilterGestiti] = useState<'tutti' | 'gestiti' | 'daGestire'>('tutti')
-  const [dateFilter, setDateFilter] = useState<DateRange>()
 
   const fetchFormulari = async () => {
     try {
@@ -46,7 +44,25 @@ export default function Page() {
         .order('created_at', { ascending: false })
   
       if (error) throw error
-      setFormulari(data || [])
+      
+      // Transform the data to match the expected Formulario type
+      const typedFormulari = (data || []).map((item: any) => ({
+        id: item.id,
+        numeroFir: item.numeroFir || '', // Make sure this field name matches exactly what's in your database
+        trasportatore: item.trasportatore || '',
+        intermediario: item.intermediario || '',
+        produttore: item.produttore || '',
+        unita_locale_produttore: item.unita_locale_produttore || '',
+        destinatario: item.destinatario || '',
+        unita_locale_destinatario: item.unita_locale_destinatario || '',
+        gestito: item.gestito || false,
+        marcaGestito: item.marcaGestito || null,
+        file_paths: item.file_paths || {},
+        id_appuntamento: item.id_appuntamento || null,
+        dati_formulario: item.dati_formulario || {}, // Add the missing property
+      }));
+      
+      setFormulari(typedFormulari)
     } catch (error) {
       console.error('Error:', error)
     } finally {
@@ -60,11 +76,7 @@ export default function Page() {
 
   const handleDelete = async (id: number) => {
     try {
-      const { error } = await supabase
-        .from('formulari')
-        .delete()
-        .eq('id', id)
-
+      const { error } = await supabase.from('formulari').delete().eq('id', id)
       if (error) throw error
       await fetchFormulari()
     } catch (error) {
@@ -81,7 +93,6 @@ export default function Page() {
           marcaGestito: !gestito ? new Date().toISOString() : null
         })
         .eq('id', id)
-
       if (error) throw error
       await fetchFormulari()
     } catch (error) {
@@ -89,40 +100,16 @@ export default function Page() {
     }
   }
 
-  const openDocument = async (path: string) => {
+  const handleDownload = async (path: string) => {
     try {
-      const { data, error } = await supabase
-        .storage
-        .from('documenti')
-        .createSignedUrl(path, 60) // URL firmato valido per 60 secondi
-  
-      if (error) throw error
-      if (data?.signedUrl) {
-        window.open(data.signedUrl, '_blank')
-      }
-    } catch (error) {
-      console.error('Error opening document:', error)
-    }
-  }
-  const downloadDocument = async (path: string) => {
-    try {
-      // Ottieni l'URL pubblico da Supabase
-      const { data } = supabase
-        .storage
-        .from('documenti')
-        .getPublicUrl(path)
-        
+      const { data } = supabase.storage.from('documenti').getPublicUrl(path)
       if (data.publicUrl) {
-        // Preleva il file come blob
         const response = await fetch(data.publicUrl)
         const blob = await response.blob()
-        // Crea un URL blob per il file
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
-        // Imposta il nome del file (prende l'ultimo segmento del path)
-        const fileName = path.split('/').pop() || 'download.pdf'
-        link.setAttribute('download', fileName)
+        link.setAttribute('download', path.split('/').pop() || 'download.pdf')
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
@@ -133,149 +120,41 @@ export default function Page() {
     }
   }
 
-  const filterByDate = (formulario: Formulario) => {
-    if (!dateFilter?.from) return true
-
-    const createdAt = new Date(formulario.created_at)
-
-    if (dateFilter.from && !dateFilter.to) {
-      return createdAt.toDateString() === dateFilter.from.toDateString()
-    }
-
-    if (dateFilter.from && dateFilter.to) {
-      const end = new Date(dateFilter.to)
-      end.setHours(23, 59, 59, 999)
-      return createdAt >= dateFilter.from && createdAt <= end
-    }
-
-    return true
-  }
-
-  const filteredFormulari = formulari
-    .filter(f => f.numeroFir.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter(f => {
-      switch (filterGestiti) {
-        case 'gestiti':
-          return f.gestito
-        case 'daGestire':
-          return !f.gestito
-        default:
-          return true
-      }
-    })
-    .filter(filterByDate)
-
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem>
+                <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="/">Home</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/documenti">Documenti</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Scansione Formulari</BreadcrumbPage>
+                  <BreadcrumbPage>Gestione Formulari</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Gestione Formulari</CardTitle>
-                <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-                  <DialogTrigger asChild>
-                    <Button>
-                      <Upload className="mr-2 h-4 w-4" />
-                      Carica Nuovo
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Carica Formulario</DialogTitle>
-                      <DialogDescription>
-                        Seleziona il file PDF del formulario da caricare
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid gap-2">
-                        <Input type="file" accept=".pdf" />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-3">
-                      <Button variant="outline" onClick={() => setIsUploadOpen(false)}>
-                        Annulla
-                      </Button>
-                      <Button onClick={() => setIsUploadOpen(false)}>
-                        Carica
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* Filtri */}
-              <div className="mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="relative w-[200px]">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Cerca per numero FIR..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-8"
-                      maxLength={20}
-                    />
-                  </div>
-                  <DateRangePicker onChange={setDateFilter} />
-                  <Select 
-                    value={filterGestiti}
-                    onValueChange={(value) => setFilterGestiti(value as 'tutti' | 'gestiti' | 'daGestire')}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Stato" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="tutti">Tutti</SelectItem>
-                      <SelectItem value="gestiti">Gestiti</SelectItem>
-                      <SelectItem value="daGestire">Da Gestire</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="mt-2 text-sm text-muted-foreground">
-                  {filteredFormulari.length} risultat{filteredFormulari.length === 1 ? 'o' : 'i'} 
-                  {filteredFormulari.length !== formulari.length && ` su ${formulari.length} totali`}
-                </div>
-              </div>
-
-              {/* Tabella */}
-                {loading ? (
-                  <div className="text-center py-4">Caricamento...</div>
-                ) : (
-                  <FormulariTable
-                      formulari={filteredFormulari as unknown as FormularioEsteso[]}
-                      loading={loading}
-                      onDelete={handleDelete}
-                      onGestione={handleGestione}
-                      onDownload={downloadDocument}
-                    />
-                )}
-            </CardContent>
-          </Card>
+          {loading ? (
+            <div className="flex items-center justify-center h-full">
+              Caricamento...
+            </div>
+          ) : (
+            <FormulariTable
+              formulari={formulari}
+              onDelete={handleDelete}
+              onGestione={handleGestione}
+              onDownload={handleDownload}
+              loading={loading}
+            />
+          )}
         </div>
       </SidebarInset>
     </SidebarProvider>
